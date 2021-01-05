@@ -1,6 +1,3 @@
-
-13 lines (11 sloc)  222 Bytes
- 
 mkdir -p ~/.streamlit/
 
 echo "\
