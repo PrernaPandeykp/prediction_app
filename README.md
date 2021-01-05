@@ -4,4 +4,4 @@ Stock market prediction is the act of trying to determine the future value of
 1)  ARIMA
 2)  LSTM </br>
 
-Take a look on app:https://share.streamlit.io/prernapandeykp/prediction_app/main/ml_app.py
+Take a look on app : https://share.streamlit.io/prernapandeykp/prediction_app/main/ml_app.py
