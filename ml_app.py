@@ -52,9 +52,9 @@ if model=="ARIMA":
         roll_std = ts_data.rolling(20).std()
     
     # Plot rolling statistics
-        
+        fig, ax = plt.subplots()
         if st.button("Plot",ts_data):
-	    fig, ax = plt.subplots()
+	 
             ax.plot(ts_data)
             ax.plot(roll_mean)
             ax.plot(roll_std)
