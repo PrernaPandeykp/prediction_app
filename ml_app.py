@@ -19,29 +19,31 @@ st.title("ML project")
 st.write("""
 # Prediction of Stock Prices
 """)
+st.subheader("Visualize the Time Series Data")
 model=st.sidebar.selectbox("select MODEL",("ARIMA","LSTM") )
 dataset=st.sidebar.selectbox("select dataset",("AAPL","GOOGL","INTC"))
-#fetch dataset
-df=web.DataReader(dataset,data_source="yahoo",start="2009-01-01",end="2019-12-17")
-st.write("shape of data",df.shape)
-st.write(df.head())
+with st.echo():
+	#fetch dataset
+	df=web.DataReader(dataset,data_source="yahoo",start="2009-01-01",end="2019-12-17")
+	st.write("shape of data",df.shape)
+	st.write(df.head())
 st.set_option('deprecation.showPyplotGlobalUse', False)
-select_column=st.multiselect("Select columns to plot",df.columns)
-plot_type=st.selectbox("Selct type of plot",("line","bar","box","hist"))
+select_column=st.multiselect("Select Columns to plot",df.columns)
+plot_type=st.selectbox("Selct Type of plot",("line","bar","box","hist"))
 if st.button("Plot"):
     cust_type=df[select_column].plot(kind=plot_type)
     st.write(cust_type)
     st.pyplot()
 
 fig, ax = plt.subplots()
-prd_col=st.selectbox("on which attribute we are going to predcit",df.columns)
+prd_col=st.selectbox("On which attribute you are going to predcit",df.columns)
 df1=df[prd_col]
 if model=="ARIMA":
     t1=0
     t2=0
     st.header("ARIMA Model Implementation")
     st.subheader("Check for stationarity")
-    st.subheader("Augmented Dickey-Fuller Unit Ratio Test")
+    st.subheader("Augmented Dickey-Fuller Test")
     #adf_test
     def check_stationarity(ts_data):
     
@@ -67,10 +69,11 @@ if model=="ARIMA":
         t2=dftest[1]
 
     def fit(stat_data):
-        warnings.filterwarnings("ignore") 
-        st.write("Best Model ",auto_arima(df1,trace=True,suppress_warnings = True))
-    
-
+	st.header("Fitting the Model")
+        with st.echo():
+		warnings.filterwarnings("ignore") 
+		st.write("Best Model ",auto_arima(df1,trace=True,suppress_warnings = True))
+			
         train = stat_data.iloc[:int(len(df)*0.90)] 
         test =stat_data.iloc[int(len(df)*0.90):]
         #a=st.selectbox("orders",("order=(2,0,3)","order=(1,0,1)"))
