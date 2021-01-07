@@ -69,10 +69,12 @@ if model=="ARIMA":
         t2=dftest[1]
 
     def fit(stat_data):
-	st.header("Fitting the Model")
-	with st.echo():
-		warnings.filterwarnings("ignore") 
-		st.write("Best Model ",auto_arima(df1,trace=True,suppress_warnings = True))
+        st.header("Fitting the Model")
+        with st.echo():
+            #To find the order of ARIMA model
+            warnings.filterwarnings("ignore") 
+            st.write("Best Model ",auto_arima(df1,trace=True,suppress_warnings = True))
+    
 
         train = stat_data.iloc[:int(len(df)*0.90)] 
         test =stat_data.iloc[int(len(df)*0.90):]
