@@ -68,7 +68,7 @@ if model=="ARIMA":
         global t2
         t2=dftest[1]
 
-def fit(stat_data):
+    def fit(stat_data):
 	st.header("Fitting the Model")
 	with st.echo():
 		warnings.filterwarnings("ignore") 
