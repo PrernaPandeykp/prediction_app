@@ -73,7 +73,7 @@ if model=="ARIMA":
         with st.echo():
 		warnings.filterwarnings("ignore") 
 		st.write("Best Model ",auto_arima(df1,trace=True,suppress_warnings = True))
-			
+
         train = stat_data.iloc[:int(len(df)*0.90)] 
         test =stat_data.iloc[int(len(df)*0.90):]
         #a=st.selectbox("orders",("order=(2,0,3)","order=(1,0,1)"))
