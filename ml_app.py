@@ -106,8 +106,9 @@ if model=="ARIMA":
 
 # Plot the forecast values 
         st.subheader("Plot the forecast values")
-	fig, ax = plt.subplots()
+        fig, ax = plt.subplots()
         ax.set_title("oringial data with forecast values",fontsize = 12)
+        
         ax.plot(stat_data)
         ax.plot(forecast)
         st.pyplot(fig)
