@@ -35,7 +35,7 @@ if st.button("Plot"):
     st.write(cust_type)
     st.pyplot()
 
-fig, ax = plt.subplots()
+
 prd_col=st.selectbox("On which attribute you are going to predcit",df.columns)
 df1=df[prd_col]
 if model=="ARIMA":
@@ -54,6 +54,7 @@ if model=="ARIMA":
     # Plot rolling statistics
         
         if st.button("Plot",ts_data):
+	    fig, ax = plt.subplots()
             ax.plot(ts_data)
             ax.plot(roll_mean)
             ax.plot(roll_std)
@@ -89,6 +90,7 @@ if model=="ARIMA":
         predictions = fit_model.predict(start=start, end=end,typ = 'levels').rename("ARIMA Predictions") 
 #plot predictions and actual values 
         st.subheader("Plot predictions and actual values")
+	fig, ax = plt.subplots()
         ax.set_title("predictions and actual values",fontsize = 12)
         ax.plot(predictions)
         ax.plot(test)
@@ -103,6 +105,7 @@ if model=="ARIMA":
 
 # Plot the forecast values 
         st.subheader("Plot the forecast values")
+	fig, ax = plt.subplots()
         ax.set_title("oringial data with forecast values",fontsize = 12)
         ax.plot(stat_data)
         ax.plot(forecast)
