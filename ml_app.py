@@ -152,7 +152,7 @@ if model=="ARIMA":
 
     #fit model
 else:
-    #preprocessing
+    st.subheader("Data Preprocessing")
     from sklearn.preprocessing import MinMaxScaler
     scaler = MinMaxScaler(feature_range=(0, 1)) 
     df1 = scaler.fit_transform(np.array(df1).reshape(-1,1))
