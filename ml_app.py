@@ -112,15 +112,12 @@ if model=="ARIMA":
         st.write('mean_absolute_percentage_error', round(mean_absolute_percentage_error(test,predictions),5 ))   
         st.write('MSE ', round(mean_squared_error(test,predictions),5))
         st.write("mean_absolute_error",round(mean_absolute_error(predictions, test),5))
-        
-        # Test accuracy
-
-
-        
-    st.write("A stationary series has no trend, its variations around its mean have a constant amplitude ")
-    st.write("For stationary: P-value<0.05 and ADF <2.51 ")
+           
+    st.markdown("""
+    A Stationary series has no trend, its variations around its mean have a constant amplitude.  
+    For stationary: P-value< 0.05 and ADF < 2.91""")
     check_stationarity(df1)
-    if (t1<2.51 and t2<0.05)==True :
+    if (t1<2.91 and t2<0.05)==True :
         st.success("Dataset become stationary")
         fit(df1)
     else:
@@ -129,7 +126,7 @@ if model=="ARIMA":
         df1_log = np.log(df1)
         #df1_log.dropna(inplace=True)
         check_stationarity(df1_log)
-        if (t1<2.51 and t2<0.05)==True :
+        if (t1<2.91 and t2<0.05)==True :
             st.write(t1,t2)
             st.success("Dataset become stationary")
             fit(df1_log) 
@@ -139,7 +136,7 @@ if model=="ARIMA":
             df1_log_diff =  df1_log - df1_log.shift(1)
             df1_log_diff.dropna(inplace=True)
             check_stationarity(df1_log_diff)
-            if (t1<2.51 and t2<0.05)==True :
+            if (t1<2.91 and t2<0.05)==True :
                 st.success("Dataset become stationary")
                 fit(df1_log_diff) 
             else:
