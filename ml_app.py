@@ -90,6 +90,7 @@ if model=="ARIMA":
         predictions = fit_model.predict(start=start, end=end,typ = 'levels').rename("ARIMA Predictions") 
 #plot predictions and actual values 
         st.subheader("Plot predictions and actual values")
+	#dfdg
 	fig, ax = plt.subplots()
         ax.set_title("predictions and actual values",fontsize = 12)
         ax.plot(predictions)
