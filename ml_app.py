@@ -199,6 +199,7 @@ else:
     train_predict=scaler.inverse_transform(train_pred)
     test_predict=scaler.inverse_transform(test_pred)
 
+    fig, ax = plt.subplots()
     ax.set_title("predictions and test values",fontsize = 12)
     ax.plot(test_pred)
     ax.plot(y_test)
