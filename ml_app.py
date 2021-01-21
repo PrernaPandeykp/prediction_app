@@ -21,7 +21,7 @@ st.write("""
 """)
 st.subheader("Visualize the Time Series Data")
 model=st.sidebar.selectbox("select MODEL",("ARIMA","LSTM") )
-dataset=st.sidebar.selectbox("select dataset",("AAPL","GOOGL","INTC"))
+dataset=st.sidebar.selectbox("select dataset",("AAPL","GOOGL","INTC","BIST100"))
 with st.echo():
 	#fetch dataset
 	df=web.DataReader(dataset,data_source="yahoo",start="2009-01-01",end="2019-12-17")
