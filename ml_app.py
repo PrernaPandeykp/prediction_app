@@ -21,7 +21,7 @@ st.write("""
 """)
 st.subheader("Visualize the Time Series Data")
 model=st.sidebar.selectbox("select MODEL",("ARIMA","LSTM") )
-dataset = st.text_input("Input Ticker value of dataset", "AAPL")
+dataset = st.sidebar.text_input("Input Ticker value of dataset", "AAPL")
 #dataset=st.sidebar.selectbox("select dataset",("AAPL","GOOGL","INTC","XU100.IS"))
 with st.echo():
 	#fetch dataset
