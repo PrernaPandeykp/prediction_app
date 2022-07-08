@@ -15,19 +15,22 @@ from sklearn.metrics import mean_absolute_percentage_error
 from pmdarima import auto_arima 
 import warnings 
 
+
+
 st.title("ML project")
 st.write("""
 # Prediction of Stock Prices
 """)
 st.subheader("Visualize the Time Series Data")
-model=st.sidebar.selectbox("select MODEL",("ARIMA","LSTM") )
-dataset = st.sidebar.text_input("Input Ticker value of dataset", "AAPL")
-#dataset=st.sidebar.selectbox("select dataset",("AAPL","GOOGL","INTC","XU100.IS"))
+
+model=st.sidebar.selectbox("Select MODEL",("ARIMA","LSTM") )
+dataset=st.sidebar.selectbox("Select dataset",("AAPL","GOOGL","INTC"))
+#fetch dataset
 with st.echo():
-	#fetch dataset
-	df=web.DataReader(dataset,data_source="yahoo",start="2009-01-01",end="2019-12-17")
-	st.write("shape of data",df.shape)
-	st.write(df.head())
+    #Fetch the dataset
+    df=web.DataReader(dataset,data_source="yahoo",start="2009-01-01",end="2019-12-17")
+    st.write("shape of data",df.shape)
+    st.write(df.head())
 st.set_option('deprecation.showPyplotGlobalUse', False)
 select_column=st.multiselect("Select Columns to plot",df.columns)
 plot_type=st.selectbox("Selct Type of plot",("line","bar","box","hist"))
@@ -43,8 +46,8 @@ if model=="ARIMA":
     t1=0
     t2=0
     st.header("ARIMA Model Implementation")
-    st.subheader("Check for stationarity")
-    st.subheader("Augmented Dickey-Fuller Test")
+    st.subheader("Check for Stationarity")
+    st.subheader("Augmented Dickey-Fuller Test(ADF Test)")
     #adf_test
     def check_stationarity(ts_data):
     
@@ -55,16 +58,18 @@ if model=="ARIMA":
     # Plot rolling statistics
         fig, ax = plt.subplots()
         if st.button("Plot",ts_data):
-	 
             ax.plot(ts_data)
             ax.plot(roll_mean)
             ax.plot(roll_std)
-            ax.set_title("plot among original data, roll mean & roll_standard_deviation",fontsize = 12)
+            ax.set_title("Plot among Original Data, Roll Mean & Roll Standard Deviation",fontsize = 12)
             st.pyplot(fig)
-    
+        
+        
+        #ADF Test
         dftest=adfuller(ts_data,autolag="AIC")
         st.write("ADF:",dftest[0])
         st.write("P-Value:",dftest[1])
+        
         global t1
         t1=dftest[0]
         global t2
@@ -75,8 +80,9 @@ if model=="ARIMA":
         with st.echo():
             #To find the order of ARIMA model
             warnings.filterwarnings("ignore") 
-            st.write("Best Model ",auto_arima(df1,trace=True,suppress_warnings = True))
-    
+            stepwise_fit =auto_arima(df1,trace=True,suppress_warnings = True)
+            st.write(stepwise_fit)
+            st.markdown(stepwise_fit.summary())
 
         train = stat_data.iloc[:int(len(df)*0.90)] 
         test =stat_data.iloc[int(len(df)*0.90):]
@@ -90,6 +96,7 @@ if model=="ARIMA":
         end = len(train) + len(test) - 1
         predictions = fit_model.predict(start=start, end=end,typ = 'levels').rename("ARIMA Predictions") 
 #plot predictions and actual values 
+
         st.subheader("Plot predictions and actual values")
         fig, ax = plt.subplots()
         ax.set_title("predictions and actual values",fontsize = 12)
@@ -118,12 +125,13 @@ if model=="ARIMA":
         st.write('mean_absolute_percentage_error', round(mean_absolute_percentage_error(test,predictions),5 ))   
         st.write('MSE ', round(mean_squared_error(test,predictions),5))
         st.write("mean_absolute_error",round(mean_absolute_error(predictions, test),5))
-           
+        
+        # Test accuracy
     st.markdown("""
     A Stationary series has no trend, its variations around its mean have a constant amplitude.  
     For stationary: P-value< 0.05 and ADF < 2.91""")
     check_stationarity(df1)
-    if (t1<2.91 and t2<0.05)==True :
+    if (t1<2.51 and t2<0.05)==True :
         st.success("Dataset become stationary")
         fit(df1)
     else:
@@ -132,7 +140,7 @@ if model=="ARIMA":
         df1_log = np.log(df1)
         #df1_log.dropna(inplace=True)
         check_stationarity(df1_log)
-        if (t1<2.91 and t2<0.05)==True :
+        if (t1<2.51 and t2<0.05)==True :
             st.write(t1,t2)
             st.success("Dataset become stationary")
             fit(df1_log) 
@@ -142,7 +150,7 @@ if model=="ARIMA":
             df1_log_diff =  df1_log - df1_log.shift(1)
             df1_log_diff.dropna(inplace=True)
             check_stationarity(df1_log_diff)
-            if (t1<2.91 and t2<0.05)==True :
+            if (t1<2.51 and t2<0.05)==True :
                 st.success("Dataset become stationary")
                 fit(df1_log_diff) 
             else:
@@ -153,7 +161,7 @@ if model=="ARIMA":
 
     #fit model
 else:
-    st.subheader("Data Preprocessing")
+    #preprocessing
     from sklearn.preprocessing import MinMaxScaler
     scaler = MinMaxScaler(feature_range=(0, 1)) 
     df1 = scaler.fit_transform(np.array(df1).reshape(-1,1))
@@ -199,7 +207,6 @@ else:
     test_pred=model.predict(x_test)
     train_predict=scaler.inverse_transform(train_pred)
     test_predict=scaler.inverse_transform(test_pred)
-
     fig, ax = plt.subplots()
     ax.set_title("predictions and test values",fontsize = 12)
     ax.plot(test_pred)
